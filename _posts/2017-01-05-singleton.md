@@ -53,8 +53,8 @@ tags:
 	
 	Singleton::~Singleton(){
 
-		if (instance ！= NULL)
-	    {
+        if (instance ！= NULL)
+        {
 	       delete instance；
 	    }
 	}
