@@ -1,0 +1,25 @@
+---
+layout:     post
+title:      "博客开通"
+subtitle:   " \"Hello World, Hello My Blog\""
+date:       01/01/2016 5:19:39 PM 
+author:     "MaJ"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - other
+---
+
+> “Yeah .I am coming”
+
+---
+### 前言
+
+Yuzi 的 Blog 今天正式开通了。
+偶然在网上发现原来可以用github自建一个博客,按照这位大神的[博文](http://playingfingers.com/2016/03/26/build-a-blog/),很快就搭建好了，域名是我在腾讯云申请的，学生认证免费哈哈。感谢这位Hux的[Blog模板](http://huangxuan.me)。以后就在这里安家了，踏踏实实学技术，好记性不如烂笔头！！！
+
+---
+
+### 加油
+
+![img](/img/1.jpg)

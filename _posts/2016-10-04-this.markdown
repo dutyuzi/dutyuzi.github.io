@@ -1,0 +1,59 @@
+---
+layout:     post
+title:      "C++this指针操作"
+subtitle:   " C + + pointer to this "
+date:       2016/10/1 14:47:13 
+author:     "MaJ"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - C++
+---
+
+
+### 总结一下this指针的相关知识点
+
+1. 在类的成员函数有一个附加隐含的参数，即指向该类对象的一个指针。这个隐含形参命名为***this***指针，与调用成员函数的对象绑定在一起。
+2. this指针只能在成员函数中使用。全局、静态函数都不能使用this，因为this指针对应一个对象。
+3. this指针在成员函数开始执行前构造，在执行结束后清除。
+### this指针使用
+一种情况是在类的非静态成员中返回类对象本身时，可以使用点运算符*(*this).或者箭头运算符this->，另外也可以返回*this的引用，这样就可以实现像输入输出流那样的“级联”操作。
+
+### 一个例子
+
+    /* 一个Screen类有如下两个操作：
+	1、set操作，将特定字符或者光标指向的字符设置为给定值；
+	2、move操作，给定两个index值，将光标移至新位置；
+    理想情况下用户希望将这两个步骤连成一个单独的表达式:
+	myScreen.move(4,0).set("a")
+    这个语句等价于
+    myScreen.move(4,0)
+    myScreen.set("a")*/
+    
+    class Screen{
+	public:
+	Screen& move（index r,index c）;
+	Screen& set（char）;
+	Screen& set（index,index,char）;
+    };
+    
+	Screen& Screen::set(char c)
+	{
+		contents[cursor] = c;
+		return *this;
+	}
+
+	Screen& Screen::move(index r,index c)
+	{
+		index row = r * width;
+		cursor = row + c;
+		return *this;	
+	}
+	
+函数中需要关注的部分是return语句，在这两个操作中，每个函数都返回*this，this是指向非常量的Screen指针。
+
+ 
+	
+
+
+
