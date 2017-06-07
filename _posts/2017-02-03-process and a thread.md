@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "linux进程和线程的区别"
-subtitle:   "process and a thread"
+subtitle:   "process and thread"
 date:        2017/02/03  11:01:39 
 author:     "MaJ"
 header-img: "img/post-bg-2015.jpg"
