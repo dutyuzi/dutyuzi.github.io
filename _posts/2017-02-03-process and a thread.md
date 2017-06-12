@@ -7,7 +7,7 @@ author:     "MaJ"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - other
+    - linux
 ---
 
 ### 一句话
