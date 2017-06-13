@@ -52,6 +52,9 @@ TCP连接的建立过程如下图所示。首先，TCP先发送一个创建连�
 
 ![img](/img/3hand.png)
 
+wireshark抓包连接过程
+
+![img](/img/3handws.jpg)
 
 简单讲：首先Client端发送连接请求报文，Server段接受连接后回复ACK报文，并为这次连接分配资源。Client端接收到ACK报文后也向Server段发生ACK报文，并分配资源，这样TCP连接就建立了。
 
@@ -119,6 +122,10 @@ HTTPD(HTTP Daemon)在服务器端处理请求/响应。最常见的 HTTPD 有 Li
 当传输层收到了应答之后，就要关闭这条连接了。但是，又不能悄悄地自己关了，目标主机那边还不知道你要不要关闭呢。于是乎，就有了对应创建TCP连接“三次握手”的关闭TCP连接“四次挥手”。如下图所示，客户端向服务器发出了FIN报文段，服务器收到后，回复一个ACK应答。然后，服务器也向客户端发送一个FIN报文段，随后关闭了服务器端的连接，释放了资源。当客户端收到之后，又向服务器回复一个ACK应答。过了一段计时等待，客户端也关闭了连接，释放资源。**这一段计时等待的时间是为了客户端重传最后的ACK防止其丢失**。
 
 ![img](/img/TCPclose.png)
+
+wireshark抓包关闭过程
+
+![img](/img/４handws.jpg)
 
 ## 参考
 [TCP/IP协议族](https://zh.wikipedia.org/wiki/TCP/IP%E5%8D%8F%E8%AE%AE%E6%97%8F)
