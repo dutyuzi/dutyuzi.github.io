@@ -125,7 +125,7 @@ HTTPD(HTTP Daemon)在服务器端处理请求/响应。最常见的 HTTPD 有 Li
 
 wireshark抓包关闭过程
 
-![img](/img/４handws.jpg)
+![img](/img/4handws.jpg)
 
 ## 参考
 [TCP/IP协议族](https://zh.wikipedia.org/wiki/TCP/IP%E5%8D%8F%E8%AE%AE%E6%97%8F)
