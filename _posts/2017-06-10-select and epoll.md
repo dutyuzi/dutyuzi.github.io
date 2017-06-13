@@ -19,7 +19,7 @@ select，poll，epoll都是IO多路复用的机制。I/O多路复用就通过一
 ### select 
 select 调用如下图所示
 
-![img](/img/select.jpg)
+![img](/img/select.png)
 
 **select函数**
 
@@ -685,7 +685,8 @@ EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果�
 （3） int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);
 　　等待事件的产生，类似于select()调用。参数events用来从内核得到事件的集合，maxevents告之内核这个events有多大，这个maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。
 
-3、工作模式
+---
+工作模式
 
 epoll对文件描述符的操作有两种模式：LT（level trigger）和ET（edge trigger）。LT模式是默认模式，LT模式与ET模式的区别如下：
 
