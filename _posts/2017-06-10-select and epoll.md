@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "selsec、poll与epoll的区别"
-subtitle:   "The difference between selsec, poll and epoll"
+title:      "select、poll与epoll的区别"
+subtitle:   "The difference between select, poll and epoll"
 date:        2017/06/10  10:01:00 
 author:     "MaJ"
 header-img: "img/post-bg-2015.jpg"
