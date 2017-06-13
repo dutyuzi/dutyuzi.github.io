@@ -12,7 +12,9 @@ tags:
 ### 背景知识
 ---
 **TCP/IP 参考模型**
+
 ![img](/img/TCP.jpg)
+
 如上图所示，TCP/IP参考模型分为四层：应用层、运输层、网络层和接口层。浏览器所完成的工作就属于应用层的范畴。
 
 ### 1 DNS域名解析
@@ -81,26 +83,25 @@ IP路由选择是逐跳（hop-to-hop）进行的。IP并不知道从H1到H2的�
 
 HTTPD(HTTP Daemon)在服务器端处理请求/响应。最常见的 HTTPD 有 Linux 上常用的 Apache 和 nginx，以及 Windows 上的 IIS。
 
-HTTPD 接收请求
 
-服务器把请求拆分为以下几个参数：
-1、HTTP 请求方法(GET, POST, HEAD, PUT, DELETE, CONNECT, OPTIONS, 或者 TRACE)。直接在地址栏中输入 URL 这种情况下，使用的是 GET 方法
 
-2、域名：baidu.com
+- HTTP 服务器接收请求，服务器把请求拆分为以下几个参数：
 
-3、请求路径/页面：/ (我们没有请求baidu.com下的指定的页面，因此 / 是默认的路径)
+ 1. HTTP 请求方法(GET, POST, HEAD, PUT, DELETE, CONNECT, OPTIONS, 或者 TRACE)。直接在地址栏中输入 URL 这种情况下，使用的是 GET 方法
+ 2. 域名：baidu.com
+ 3. 请求路径/页面：/ (我们没有请求baidu.com下的指定的页面，因此 / 是默认的路径)
 
-服务器验证其上已经配置了 baidu.com 的虚拟主机
+- 服务器验证其上已经配置了 baidu.com 的虚拟主机
 
-服务器验证 baidu.com 接受 GET 方法
+- 服务器验证 baidu.com 接受 GET 方法
 
-服务器验证该用户可以使用 GET 方法(根据 IP 地址，身份信息等)
+- 服务器验证该用户可以使用 GET 方法(根据 IP 地址，身份信息等)
 
-如果服务器安装了 URL 重写模块（例如 Apache 的 mod_rewrite 和 IIS 的 URL Rewrite），服务器会尝试匹配重写规则，如果匹配上的话，服务器会按照规则重写这个请求
+- 如果服务器安装了 URL 重写模块（例如 Apache 的 mod_rewrite 和 - IIS 的 URL Rewrite），服务器会尝试匹配重写规则，如果匹配上的话，服务器会按照规则重写这个请求
 
-服务器根据请求信息获取相应的响应内容，这种情况下由于访问路径是 "/" ,会访问首页文件（你可以重写这个规则，但是这个是最常用的）。
+- 服务器根据请求信息获取相应的响应内容，这种情况下由于访问路径是 "/" ,会访问首页文件（你可以重写这个规则，但是这个是最常用的）。
 
-服务器会使用指定的处理程序分析处理这个文件，假如 baidu 使用 PHP，服务器会使用 PHP 解析 index 文件，并捕获输出，把 PHP 的输出结果返回给请求者。
+- 服务器会使用指定的处理程序分析处理这个文件，假如 baidu 使用 PHP，服务器会使用 PHP 解析 index 文件，并捕获输出，把 PHP 的输出结果返回给请求者。
 
 **总结以上过程**：
 目标主机收到了请求后，自底向上地对该请求进行处理。链路层把数据报传给网络层，网路层将TCP数据段通过对应的Socket传给应用程序。应用程序处理请求后产生一个应答的HTTP报文，又经过了一层层的封装、一跳跳的传输到达了源主机。
@@ -124,4 +125,4 @@ HTTPD 接收请求
 
 [当···时发生了什么？](https://github.com/skyline75489/what-happens-when-zh_CN#id6)
 
-
+[TCP协议中的三次握手和四次挥手(图解)](http://blog.csdn.net/whuslei/article/details/6667471/)
