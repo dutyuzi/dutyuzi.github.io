@@ -42,26 +42,24 @@ linux下的进程通信手段基本上是从Unix平台上的进程通信手段�
 
 在Linux 中，创造新进程的方法只有一个，就是fork函数。其他一些库函数，如system()，看起来似乎它们也能创建新的进程，如果能看一下它们的源码就会明白，它们实际上也在内部调用了fork。包括我们在命令行下运行应用程序，新的进程也是由shell调用fork制造出来的。
 
-    /* fork_test.c */
+	/* fork_test.c */
 	#include<sys/types.h>
 	#inlcude<unistd.h>
 	main()
 	{
-        	pid_t pid;
-        	 
-        	/*此时仅有一个进程*/
-        	pid=fork();
-        	/*此时已经有两个进程在同时运行*/
-        	if(pid<0)
-        	printf("error in fork!");
-        	else if(pid==0)
-        	printf("I am the child process, my process ID is %d/n",getpid());
-        	else
-        	printf("I am the parent process, my process ID is %d/n",getpid());
+	pid_t pid;
+	 
+	/*此时仅有一个进程*/
+	pid=fork();
+	/*此时已经有两个进程在同时运行*/
+	if(pid<0)
+	printf("error in fork!");
+	else if(pid==0)
+	printf("I am the child process, my process ID is %d/n",getpid());
+	else
+	printf("I am the parent process, my process ID is %d/n",getpid());
 	}
-	
-编译并运行：
-
+	编译并运行：
 	$gcc fork_test.c -o fork_test
 	$./fork_test
 	I am the parent process, my process ID is 1991
@@ -122,7 +120,7 @@ FIFO，也称为**命名管道**，它是一种文件类型
 ## 特点 ##
 1. FIFO可以在**无关的进程**之间交换数据，与无名管道不同。
 2. FIFO有路径名与之相关联，它以一种特殊设备文件形式存在于文件系统中。
-## 相关API ##
+## 相关函数 ##
 	#include <sys/stat.h>
 	// 返回值：成功返回0，出错返回-1
 	int mkfifo(const char *pathname, mode_t mode);
@@ -593,9 +591,6 @@ Linux 下的信号量函数都是在通用的信号量数组上进行操作，�
 # 五、共享内存 #
 **共享内存（Shared Memory）**，指两个或多个进程共享一个给定的存储区。
 ## 特点 ##
-
-
-
 1. 共享内存是最快的一种 IPC，因为进程是直接对内存进行存取。
 2. 因为多个进程可以同时操作，所以需要进行同步。
 3. 信号量+共享内存通常结合在一起使用，信号量用来同步对共享内存的访问
@@ -964,9 +959,167 @@ shmctl函数可以对共享内存执行多种操作，根据参数 cmd 执行相
 	Please input command: q
 	root@ubuntu:~/mytest# 
 
+# 六、Socket #
+Socket起源于Unix，而Unix/Linux基本哲学之一就是“一切皆文件”，都可以用“打开open –> 读写write/read –> 关闭close”模式来操作。我的理解就是Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭）。
+## 特点 ##
+前面说到的进程间的通信，所通信的进程都是在同一台计算机上的，而使用socket进行通信的进程可以是同一台计算机的进程，也是可以是通过网络连接起来的不同计算机上的进程。
+
+## 相关API ##
+
+	#include <sys/types.h>
+	#include <sys/socket.h>
+	#include <unistd.h>
+	int socket(int domain, int type, int protocol);
+	int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+	int listen(int sockfd, int backlog);
+	int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+	int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+
+
+	ssize_t read(int fd, void *buf, size_t count);
+	ssize_t write(int fd, const void *buf, size_t count);
+	
+	
+	ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+	ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+	
+	ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+	               const struct sockaddr *dest_addr, socklen_t addrlen);
+	ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+	                 struct sockaddr *src_addr, socklen_t *addrlen);
+	
+	ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
+	ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);\
+
+
+socket函数对应于普通文件的打开操作。普通文件的打开操作返回一个文件描述字，而socket()用于创建一个socket描述符（socket descriptor），它唯一标识一个socket。这个socket描述字跟文件描述字一样，后续的操作都有用到它，把它作为参数，通过它来进行一些读写操作。
+
+正如可以给fopen的传入不同参数值，以打开不同的文件。创建socket的时候，也可以指定不同的参数创建不同的socket描述符，socket函数的三个参数分别为：
+
+domain：即协议域，又称为协议族（family）。常用的协议族有，AF_INET、AF_INET6、AF_LOCAL（或称AF_UNIX，Unix域socket）、AF_ROUTE等等。协议族决定了socket的地址类型，在通信中必须采用对应的地址，如AF_INET决定了要用ipv4地址（32位的）与端口号（16位的）的组合、AF_UNIX决定了要用一个绝对路径名作为地址。
+type：指定socket类型。常用的socket类型有，SOCK_STREAM、SOCK_DGRAM、SOCK_RAW、SOCK_PACKET、SOCK_SEQPACKET等等（socket的类型有哪些？）。
+protocol：故名思意，就是指定协议。常用的协议有，IPPROTO_TCP、IPPTOTO_UDP、IPPROTO_SCTP、IPPROTO_TIPC等，它们分别对应TCP传输协议、UDP传输协议、STCP传输协议、TIPC传输协议（这个协议我将会单独开篇讨论！）。
+注意：并不是上面的type和protocol可以随意组合的，如SOCK_STREAM不可以跟IPPROTO_UDP组合。当protocol为0时，会自动选择type类型对应的默认协议。
+
+当我们调用socket创建一个socket时，返回的socket描述字它存在于协议族（address family，AF_XXX）空间中，但没有一个具体的地址。如果想要给它赋值一个地址，就必须调用bind()函数，否则就当调用connect()、listen()时系统会自动随机分配一个端口。
+
+
+## 示例代码 ##
+
+***TCPServer.c***
+
+	#include<stdio.h>
+	#include<stdlib.h>
+	#include<string.h>
+	#include<errno.h>
+	#include<sys/types.h>
+	#include<sys/socket.h>
+	#include<netinet/in.h>
+	
+	#define MAXLINE 4096
+	
+	int main(int argc, char** argv)
+	{
+	    int    listenfd, connfd;
+	    struct sockaddr_in     servaddr;
+	    char    buff[4096];
+	    int     n;
+	
+	    if( (listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ){
+	    printf("create socket error: %s(errno: %d)\n",strerror(errno),errno);
+	    exit(0);
+	    }
+	
+	    memset(&servaddr, 0, sizeof(servaddr));
+	    servaddr.sin_family = AF_INET;
+	    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	    servaddr.sin_port = htons(6666);
+	
+	    if( bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) == -1){
+	    printf("bind socket error: %s(errno: %d)\n",strerror(errno),errno);
+	    exit(0);
+	    }
+	
+	    if( listen(listenfd, 10) == -1){
+	    printf("listen socket error: %s(errno: %d)\n",strerror(errno),errno);
+	    exit(0);
+	    }
+	
+	    printf("======waiting for client's request======\n");
+	    while(1){
+	    if( (connfd = accept(listenfd, (struct sockaddr*)NULL, NULL)) == -1){
+	        printf("accept socket error: %s(errno: %d)",strerror(errno),errno);
+	        continue;
+	    }
+	    n = recv(connfd, buff, MAXLINE, 0);
+	    buff[n] = '\0';
+	    printf("recv msg from client: %s\n", buff);
+	    close(connfd);
+	    }
+	
+	    close(listenfd);
+	}
+
+***TCPClient.c***
+
+	#include<stdio.h>
+	#include<stdlib.h>
+	#include<string.h>
+	#include<errno.h>
+	#include<sys/types.h>
+	#include<sys/socket.h>
+	#include<netinet/in.h>
+	
+	#define MAXLINE 4096
+	
+	int main(int argc, char** argv)
+	{
+	    int    sockfd, n;
+	    char    recvline[4096], sendline[4096];
+	    struct sockaddr_in    servaddr;
+	
+	    if( argc != 2){
+	    printf("usage: ./client <ipaddress>\n");
+	    exit(0);
+	    }
+	
+	    if( (sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+	    printf("create socket error: %s(errno: %d)\n", strerror(errno),errno);
+	    exit(0);
+	    }
+	
+	    memset(&servaddr, 0, sizeof(servaddr));
+	    servaddr.sin_family = AF_INET;
+	    servaddr.sin_port = htons(6666);
+	    if( inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0){
+	    printf("inet_pton error for %s\n",argv[1]);
+	    exit(0);
+	    }
+	
+	    if( connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) < 0){
+	    printf("connect error: %s(errno: %d)\n",strerror(errno),errno);
+	    exit(0);
+	    }
+	
+	    printf("send msg to server: \n");
+	    fgets(sendline, 4096, stdin);
+	    if( send(sockfd, sendline, strlen(sendline), 0) < 0)
+	    {
+	    printf("send msg error: %s(errno: %d)\n", strerror(errno), errno);
+	    exit(0);
+	    }
+	
+	    close(sockfd);
+	    exit(0);
+	}
+
+当然上面的代码很简单，也有很多缺点，这就只是简单的演示socket的基本函数使用。其实不管有多复杂的网络程序，都使用的这些基本函数。上面的服务器使用的是迭代模式的，即只有处理完一个客户端请求才会去处理下一个客户端的请求，这样的服务器处理能力是很弱的，现实中的服务器都需要有并发处理能力！为了需要并发处理，服务器需要fork()一个新的进程或者线程去处理请求等。
+
 ### 参考
 [Linux fork()返回值说明](http://blog.csdn.net/lovenankai/article/details/6874475)
 
 [进程间通信（IPC）](http://songlee24.github.io/2015/04/21/linux-IPC/)
 
 [深刻理解Linux进程间通信（IPC）](https://www.ibm.com/developerworks/cn/linux/l-ipc/)
+
+[Linux Socket编程（不限Linux）](http://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html)
