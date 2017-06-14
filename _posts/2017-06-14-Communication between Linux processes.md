@@ -47,19 +47,21 @@ linux下的进程通信手段基本上是从Unix平台上的进程通信手段�
 	#inlcude<unistd.h>
 	main()
 	{
-	pid_t pid;
-	 
-	/*此时仅有一个进程*/
-	pid=fork();
-	/*此时已经有两个进程在同时运行*/
-	if(pid<0)
-	printf("error in fork!");
-	else if(pid==0)
-	printf("I am the child process, my process ID is %d/n",getpid());
-	else
-	printf("I am the parent process, my process ID is %d/n",getpid());
+        	pid_t pid;
+        	 
+        	/*此时仅有一个进程*/
+        	pid=fork();
+        	/*此时已经有两个进程在同时运行*/
+        	if(pid<0)
+        	printf("error in fork!");
+        	else if(pid==0)
+        	printf("I am the child process, my process ID is %d/n",getpid());
+        	else
+        	printf("I am the parent process, my process ID is %d/n",getpid());
 	}
-	编译并运行：
+	
+编译并运行：
+
 	$gcc fork_test.c -o fork_test
 	$./fork_test
 	I am the parent process, my process ID is 1991
