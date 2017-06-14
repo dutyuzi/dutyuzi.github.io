@@ -42,7 +42,7 @@ linux下的进程通信手段基本上是从Unix平台上的进程通信手段�
 
 在Linux 中，创造新进程的方法只有一个，就是fork函数。其他一些库函数，如system()，看起来似乎它们也能创建新的进程，如果能看一下它们的源码就会明白，它们实际上也在内部调用了fork。包括我们在命令行下运行应用程序，新的进程也是由shell调用fork制造出来的。
 
-/* fork_test.c */
+    /* fork_test.c */
 	#include<sys/types.h>
 	#inlcude<unistd.h>
 	main()
