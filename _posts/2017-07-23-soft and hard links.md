@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "Soft links differ from hard links"
-subtitle:   ""
+title:      "软链接和硬链接的区别"
+subtitle:   "Soft links differ from hard links"
 date:        2017/7/22 20:15:02 
 author:     "MaJ"
 header-img: "img/post-bg-2015.jpg"
