@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "C++ Volatile的起源"
+title:      "C++ volatile的起源"
 subtitle:   "The origin of c + + Volatile"
 date:        2017/8/13 16:57:02 
 author:     "MaJ"
