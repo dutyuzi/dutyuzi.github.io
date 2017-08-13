@@ -7,7 +7,7 @@ author:     "MaJ"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - C++
+    - linux
 ---
 ---
 ## Unix/Linux的体系架构
@@ -65,4 +65,4 @@ c. 外围设备的中断
 [3] 将先前由中断向量检索得到的中断处理程序的cs,eip信息装入相应的寄存器，开始执行中断处理程序，这时就转到了内核态的程序执行了。
 
 # 参考
-[http://blog.csdn.net/zjc156m/article/details/16819357](http://blog.csdn.net/zjc156m/article/details/16819357)
+[http://jakielong.iteye.com/blog/771663](http://jakielong.iteye.com/blog/771663)
